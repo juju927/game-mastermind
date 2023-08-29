@@ -1,4 +1,5 @@
-// constants
+// variables
+//    constants
 const codePegs = {
   all: "red orange yellow green blue purple".split(" "),
   current: [], // colour list for current game
@@ -11,7 +12,7 @@ const gameSettings = {
   duplicates: true, // can decide later if duplicates not allowed
 };
 
-// variables
+//    game state
 const code = [];
 const gameState = {
   isWin: false,
@@ -25,10 +26,15 @@ const currentMove = {
   keyList: [],
 };
 
+//    query selectors
+const playerInputEl = document.querySelector(".player-input");
+const colourInputEl = document.querySelector(".colour-input");
+
 // functions
+//    game setup
 function setCode() {
   let temp = [...codePegs.all];
-  console.log(temp)
+  console.log(temp);
   for (let i = 0; i < gameSettings.keyLength; i++) {
     let index = Math.floor(Math.random() * temp.length);
     code.push(temp[index]);
@@ -70,8 +76,16 @@ function checkAnswer() {
   }
 }
 
-// function setupPlayerInput() {}
-
+//    ui setup
+function setupPlayerInput() {
+  for (let colour of codePegs.current) {
+    const a = document.createElement("div");
+    a.innerText = colour;
+    a.classList.add("colour-peg");
+    a.classList.add(`${colour}-peg`);
+    colourInputEl.append(a);
+  }
+}
 
 // game.answer = setAnswer();
 
