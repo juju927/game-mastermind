@@ -16,13 +16,12 @@ const gameSettings = {
 const code = [];
 const gameState = {
   isWin: false,
-  isGame: false,
-  // points: 0,
+  isPlaying: true,
 };
 
 const currentMove = {
-  attemptNo: 0,
-  guess: ["red", "blue", "yellow", "green"],
+  attemptNo: 1,
+  guess: [],
   keyList: [],
 };
 
@@ -31,6 +30,9 @@ const playerInputEl = document.querySelector(".player-input");
 const colourInputEl = document.querySelector(".colour-input");
 const decodingBoardEl = document.querySelector(".decoding-board");
 
+//    dynamic elements/ query selectors
+const colourButtonEl = [];
+
 // functions
 //    game setup
 function initialiseGame() {
@@ -38,6 +40,7 @@ function initialiseGame() {
   setCode();
   setupPlayerInput();
   setupDecodingBoard();
+  changeSelectionOutline();
 }
 
 function setColours() {
@@ -56,7 +59,7 @@ function setCode() {
   }
 }
 
-function checkAnswer() {
+function checkGuess() {
   let tempAns = [...code]; // make a copy of the answer into current move's temp
 
   // check for correct colour, correct spot (R)
@@ -83,7 +86,12 @@ function checkAnswer() {
   }
 }
 
-//    ui setup
+//    game control
+function removeLastColourFromGuess() {
+  currentMove.guess.pop();
+}
+
+//    ui setup/ update
 function setupPlayerInput() {
   for (let colour of codePegs.current) {
     const a = document.createElement("div");
@@ -99,9 +107,6 @@ function setupDecodingBoard() {
     const decodeAttemptEl = document.createElement("div");
     decodeAttemptEl.classList.add("decode-attempt");
     decodeAttemptEl.classList.add(`turn-${i}`);
-    if (i == 1) {
-      decodeAttemptEl.classList.add("selected");
-    }
 
     const turnNumberEl = document.createElement("div");
     turnNumberEl.innerText = i;
@@ -116,11 +121,13 @@ function setupDecodingBoard() {
     for (let j = 0; j < gameSettings.keyLength; j++) {
       const codePegEl = document.createElement("div");
       codePegEl.classList.add("code-peg");
+      codePegEl.classList.add(`turn-${i}`);
       codePegEl.classList.add(`pos-${j}`);
       codePegListEl.append(codePegEl);
 
       const keyPegEl = document.createElement("div");
       keyPegEl.classList.add("key-peg");
+      keyPegEl.classList.add(`turn-${i}`);
       keyPegEl.classList.add(`pos-${j}`);
       keyPegListEl.append(keyPegEl);
     }
@@ -133,14 +140,39 @@ function setupDecodingBoard() {
   }
 }
 
-function applySelection(element) {
-  element.classList.add("selected");
+function changeSelectionOutline() {
+  const selected = document.querySelector(".selected");
+  if (selected) {
+    selected.classList.remove("selected");
+  }
+  const toSelect = document.querySelector(`.turn-${currentMove.attemptNo}`);
+  toSelect.classList.add("selected");
 }
 
-function removeSelection(element) {
-  element.classList.remove("selected");
+function renderGuess() {
+  for (let i = 0; i < currentMove.guess.length; i++) {
+    const a = document.querySelector(`.turn-${currentMove.attemptNo}.pos-${i}`)
+    a.classList.add(`${currentMove.guess[i]}-peg`)
+  }
 }
 
-// event listeners
+//    event listeners
+playerInputEl.addEventListener("click", function (e) {
+  e.preventDefault();
 
-initialiseGame();
+  if (e.target.classList.contains("colour-peg")) {
+    // if game is not ongoing, ignore the click
+    if (!gameState.isPlaying) {
+      return;
+    }
+
+    // if not, add to currentMove's guess
+    if (currentMove.guess.length != gameSettings.keyLength) {
+      currentMove.guess.push(e.target.innerText);
+    }
+    renderGuess();
+    return;
+  }
+});
+
+initialiseGame()
