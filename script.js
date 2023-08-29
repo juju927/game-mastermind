@@ -2,7 +2,7 @@
 const codePegs = {
   all: "red orange yellow green blue purple".split(" "),
   current: [], // colour list for current game
-} 
+};
 
 const gameSettings = {
   totalTries: 10, // amount of tries before game lose
@@ -28,13 +28,20 @@ const currentMove = {
 
 // functions
 function setCode() {
+  let temp = [...codePegs.all];
+  console.log(temp)
   for (let i = 0; i < gameSettings.keyLength; i++) {
-    code.push(codePegs[Math.floor(Math.random() * codePegs.length)]);
+    let index = Math.floor(Math.random() * temp.length);
+    code.push(temp[index]);
+
+    if (!gameSettings.duplicates) {
+      temp.splice(index, 1);
+    }
   }
 }
 
 function setColours() {
-  codePegs.current = codePegs.all.slice(0, gameSettings.colours)
+  codePegs.current = codePegs.all.slice(0, gameSettings.colours);
 }
 
 function checkAnswer() {
@@ -62,9 +69,8 @@ function checkAnswer() {
   }
 }
 
-function setupPlayerInput() {
+// function setupPlayerInput() {}
 
-}
 
 // game.answer = setAnswer();
 
