@@ -1,8 +1,13 @@
 // constants
-const codePegs = "red orange yellow green blue purple".split(" ");
+const codePegs = {
+  all: "red orange yellow green blue purple".split(" "),
+  current: [], // colour list for current game
+} 
+
 const gameSettings = {
   totalTries: 10, // amount of tries before game lose
   keyLength: 4, // how long the code is
+  colours: 6, // number of colour type inputs (max 6)
   duplicates: true, // can decide later if duplicates not allowed
 };
 
@@ -26,6 +31,10 @@ function setCode() {
   for (let i = 0; i < gameSettings.keyLength; i++) {
     code.push(codePegs[Math.floor(Math.random() * codePegs.length)]);
   }
+}
+
+function setColours() {
+  codePegs.current = codePegs.all.slice(0, gameSettings.colours)
 }
 
 function checkAnswer() {
@@ -53,11 +62,10 @@ function checkAnswer() {
   }
 }
 
+function setupPlayerInput() {
+
+}
+
 // game.answer = setAnswer();
-setCode();
-console.log("code", code);
-console.log("guess", currentMove.guess);
-checkAnswer();
-console.log(currentMove.keyList);
 
 // event listeners
