@@ -12,6 +12,17 @@ const gameSettings = {
   duplicates: true, // can decide later if duplicates not allowed
 };
 
+const keyBinds = {
+  r: "red",
+  o: "orange",
+  y: "yellow",
+  g: "green",
+  b: "blue",
+  p: "purple",
+  Enter: submitGuess,
+  Backspace: removeLastColourFromGuess,
+};
+
 //    game state
 const code = [];
 const gameState = {
@@ -31,7 +42,6 @@ const colourInputEl = document.querySelector(".colour-input");
 const decodingBoardEl = document.querySelector(".decoding-board");
 
 //    dynamic elements/ query selectors
-// const colourButtonEl = [];
 
 // functions
 //    game setup
@@ -89,14 +99,24 @@ function checkGuess() {
 //    game control
 function removeLastColourFromGuess() {
   currentMove.guess.pop();
+  renderGuess();
 }
 
-function addtoGuess(e) {
-  currentMove.guess.push(e.target.innerText);
+function addtoGuess(colour) {
+  if (currentMove.guess.length != gameSettings.keyLength) {
+    if (codePegs.current.includes(colour)) {
+      currentMove.guess.push(colour);
+    }
+  }
   renderGuess();
 }
 
 function submitGuess() {
+  // if guess is not complete, ignore the click
+  //! in future add an animation to this
+  if (currentMove.guess.length != gameSettings.keyLength) {
+    return;
+  }
   checkGuess();
   renderKeys();
   currentMove.attemptNo += 1;
@@ -106,7 +126,7 @@ function submitGuess() {
 }
 
 function showAnswer() {
-  console.log(code)
+  console.log(code);
 }
 
 //    ui setup/ update
@@ -175,10 +195,19 @@ function changeSelectionOutline() {
 }
 
 function renderGuess() {
+  for (let guessColourEl of document.querySelectorAll(
+    `.code-peg.turn-${currentMove.attemptNo}`
+  )) {
+    for (let colour of codePegs.current) {
+      guessColourEl.classList.remove(`${colour}-peg`);
+    }
+  }
+
   for (let i = 0; i < currentMove.guess.length; i++) {
     const a = document.querySelector(
       `.code-peg.turn-${currentMove.attemptNo}.pos-${i}`
     );
+    a.classList.remove();
     a.classList.add(`${currentMove.guess[i]}-peg`);
   }
 }
@@ -205,25 +234,49 @@ playerInputEl.addEventListener("click", function (e) {
     }
 
     // if not, add to currentMove's guess
-    if (currentMove.guess.length != gameSettings.keyLength) {
-      // currentMove.guess.push(e.target.innerText);
-      addtoGuess(e);
-    }
+    addtoGuess(e.target.innerText);
     return;
   }
   // clicked the submit button
   if (e.target.classList.contains("submit-button")) {
-    // if guess is not complete, ignore the click
-    //! in future add an animation to this
-    if (currentMove.guess.length != gameSettings.keyLength) {
+    // if game is not ongoing, ignore the click (a bit redundant tbh)
+    if (!gameState.isPlaying) {
       return;
     }
+
     // if not, submit the guess
     submitGuess();
+    return;
+  }
+});
+
+document.addEventListener("keydown", function (e) {
+  e.preventDefault();
+
+  // is game is not ongoing, ignore the key press
+  if (!gameState.isPlaying) {
+    return;
   }
 
+  // if not a keybind, ignore the key press
+  if (!(e.key in keyBinds)) {
+    return;
+  }
 
+  // if colour keybind, add colour to guess
+  if ("roygbp".split("").includes(e.key)) {
+    addtoGuess(keyBinds[e.key]);
+    return;
+  }
 
+  // if enter/ backspace then carry out mapped function
+  keyBinds[e.key]();
+  return;
 });
 
 initialiseGame();
+
+// immediate to-do:
+// - start screen/ start game button
+// - game over/ game win
+// - game reset
