@@ -21,7 +21,6 @@ const gameState = {
 
 const currentMove = {
   attemptNo: 0,
-  temp: [],
   guess: ["red", "blue", "yellow", "green"],
   keyList: [],
 };
@@ -45,25 +44,27 @@ function setColours() {
 }
 
 function checkAnswer() {
-  currentMove.temp = [...code]; // make a copy of the answer into current move's temp
+  let tempAns = [...code]; // make a copy of the answer into current move's temp
 
   // check for correct colour, correct spot (R)
-  for (let i = 0; i < currentMove.temp.length; i++) {
-    if (currentMove.temp[i] == currentMove.guess[i]) {
+  // replace checked values with 'x'
+  for (let i = 0; i < temp.length; i++) {
+    if (tempAns[i] == currentMove.guess[i]) {
       currentMove.keyList.push("R");
-      currentMove.temp[i] = "x";
+      tempAns[i] = "x";
       currentMove.guess[i] = "x";
     }
   }
 
   // check for correct colour, wrong spot (W)
   for (col of currentMove.guess) {
+    // if 'x', ignore
     if (col == "x") {
       continue;
     }
 
-    if (currentMove.temp.includes(col)) {
-      currentMove.temp[currentMove.temp.indexOf(col)] = "x";
+    if (tempAns.includes(col)) {
+      tempAns[tempAns.indexOf(col)] = "x";
       currentMove.keyList.push("W");
     }
   }
