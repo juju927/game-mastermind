@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@600&display=swap');
 
 :root {
-  --main-bg-col: #000000;
+  --main-bg-col: #d8b7fa;
   --game-container-bg-col: #ffffff;
   --title-text-col: #e8e8e8;
   --title-shadow-col: #3a47d3;
   --label-bg-col: #bbada0;
+  --selected-outline-col: #6a77dd;
 
   /* peg colours */
   --code-red: #ff0c12;
@@ -14,13 +15,11 @@
   --code-green: #5cff00;
   --code-blue: #00cffb;
   --code-purple: #8f00f2;
-  --code-empty: #bababa;
+  --code-empty: #acacac5a;
 
   --key-red: red;
   --key-white: white;
 }
-
-
 
 body {
   font-family: "Roboto Flex", sans-serif;
@@ -147,6 +146,10 @@ header {
   font-size: 1rem;
   text-align: center;
   line-height: 3.5rem;
+}
+
+.selected {
+  border: 0.25rem solid var(--selected-outline-col);
 }
 
 .red-peg {

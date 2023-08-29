@@ -34,10 +34,10 @@ const decodingBoardEl = document.querySelector(".decoding-board");
 // functions
 //    game setup
 function initialiseGame() {
-  setColours()
-  setCode()
-  setupPlayerInput()
-  setupDecodingBoard()
+  setColours();
+  setCode();
+  setupPlayerInput();
+  setupDecodingBoard();
 }
 
 function setColours() {
@@ -99,6 +99,9 @@ function setupDecodingBoard() {
     const decodeAttemptEl = document.createElement("div");
     decodeAttemptEl.classList.add("decode-attempt");
     decodeAttemptEl.classList.add(`turn-${i}`);
+    if (i == 1) {
+      decodeAttemptEl.classList.add("selected");
+    }
 
     const turnNumberEl = document.createElement("div");
     turnNumberEl.innerText = i;
@@ -130,7 +133,14 @@ function setupDecodingBoard() {
   }
 }
 
-initialiseGame()
-// game.answer = setAnswer();
+function applySelection(element) {
+  element.classList.add("selected");
+}
+
+function removeSelection(element) {
+  element.classList.remove("selected");
+}
 
 // event listeners
+
+initialiseGame();
