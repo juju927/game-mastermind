@@ -117,6 +117,7 @@ header {
   border: 0.25px solid black;
   height: 1rem;
   width: 1rem;
+  background-color: var(--code-empty);
 }
 
 .player-input {
@@ -134,7 +135,7 @@ header {
   background-color: var(--game-container-bg-col);
 }
 
-.colour-peg {
+.button {
   border-radius: 50%;
   height: 3.5rem;
   width: 3.5rem;
@@ -174,6 +175,11 @@ header {
 
 .purple-peg {
   background-color: var(--code-purple);
+}
+
+.submit-button {
+  background-image: url(https://emojimix.app/emojimixfusion/34_65.png);
+  background-size: cover;
 }
 
 .R-peg {

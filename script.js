@@ -31,7 +31,7 @@ const colourInputEl = document.querySelector(".colour-input");
 const decodingBoardEl = document.querySelector(".decoding-board");
 
 //    dynamic elements/ query selectors
-const colourButtonEl = [];
+// const colourButtonEl = [];
 
 // functions
 //    game setup
@@ -64,7 +64,7 @@ function checkGuess() {
 
   // check for correct colour, correct spot (R)
   // replace checked values with 'x'
-  for (let i = 0; i < temp.length; i++) {
+  for (let i = 0; i < tempAns.length; i++) {
     if (tempAns[i] == currentMove.guess[i]) {
       currentMove.keyList.push("R");
       tempAns[i] = "x";
@@ -91,15 +91,40 @@ function removeLastColourFromGuess() {
   currentMove.guess.pop();
 }
 
+function addtoGuess(e) {
+  currentMove.guess.push(e.target.innerText);
+  renderGuess();
+}
+
+function submitGuess() {
+  checkGuess();
+  renderKeys();
+  currentMove.attemptNo += 1;
+  currentMove.guess = [];
+  currentMove.keyList = [];
+  changeSelectionOutline();
+}
+
+function showAnswer() {
+  console.log(code)
+}
+
 //    ui setup/ update
 function setupPlayerInput() {
   for (let colour of codePegs.current) {
     const a = document.createElement("div");
     a.innerText = colour;
+    a.classList.add("button");
     a.classList.add("colour-peg");
     a.classList.add(`${colour}-peg`);
     colourInputEl.append(a);
   }
+
+  const submitButton = document.createElement("div");
+  submitButton.innerText = "submit";
+  submitButton.classList.add("button");
+  submitButton.classList.add("submit-button");
+  colourInputEl.append(submitButton);
 }
 
 function setupDecodingBoard() {
@@ -151,8 +176,20 @@ function changeSelectionOutline() {
 
 function renderGuess() {
   for (let i = 0; i < currentMove.guess.length; i++) {
-    const a = document.querySelector(`.turn-${currentMove.attemptNo}.pos-${i}`)
-    a.classList.add(`${currentMove.guess[i]}-peg`)
+    const a = document.querySelector(
+      `.code-peg.turn-${currentMove.attemptNo}.pos-${i}`
+    );
+    a.classList.add(`${currentMove.guess[i]}-peg`);
+  }
+}
+
+function renderKeys() {
+  console.log(currentMove.keyList);
+  for (let i = 0; i < currentMove.keyList.length; i++) {
+    const a = document.querySelector(
+      `.key-peg.turn-${currentMove.attemptNo}.pos-${i}`
+    );
+    a.classList.add(`${currentMove.keyList[i]}-peg`);
   }
 }
 
@@ -160,6 +197,7 @@ function renderGuess() {
 playerInputEl.addEventListener("click", function (e) {
   e.preventDefault();
 
+  // clicked a user input colour
   if (e.target.classList.contains("colour-peg")) {
     // if game is not ongoing, ignore the click
     if (!gameState.isPlaying) {
@@ -168,11 +206,24 @@ playerInputEl.addEventListener("click", function (e) {
 
     // if not, add to currentMove's guess
     if (currentMove.guess.length != gameSettings.keyLength) {
-      currentMove.guess.push(e.target.innerText);
+      // currentMove.guess.push(e.target.innerText);
+      addtoGuess(e);
     }
-    renderGuess();
     return;
   }
+  // clicked the submit button
+  if (e.target.classList.contains("submit-button")) {
+    // if guess is not complete, ignore the click
+    //! in future add an animation to this
+    if (currentMove.guess.length != gameSettings.keyLength) {
+      return;
+    }
+    // if not, submit the guess
+    submitGuess();
+  }
+
+
+
 });
 
-initialiseGame()
+initialiseGame();
