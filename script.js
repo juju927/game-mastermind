@@ -26,15 +26,26 @@ const currentMove = {
   keyList: [],
 };
 
-//    query selectors
+//    cached elements/ query selectors
 const playerInputEl = document.querySelector(".player-input");
 const colourInputEl = document.querySelector(".colour-input");
+const decodingBoardEl = document.querySelector(".decoding-board");
 
 // functions
 //    game setup
+function initialiseGame() {
+  setColours()
+  setCode()
+  setupPlayerInput()
+  setupDecodingBoard()
+}
+
+function setColours() {
+  codePegs.current = codePegs.all.slice(0, gameSettings.colours);
+}
+
 function setCode() {
-  let temp = [...codePegs.all];
-  console.log(temp);
+  let temp = [...codePegs.current];
   for (let i = 0; i < gameSettings.keyLength; i++) {
     let index = Math.floor(Math.random() * temp.length);
     code.push(temp[index]);
@@ -43,10 +54,6 @@ function setCode() {
       temp.splice(index, 1);
     }
   }
-}
-
-function setColours() {
-  codePegs.current = codePegs.all.slice(0, gameSettings.colours);
 }
 
 function checkAnswer() {
@@ -87,6 +94,43 @@ function setupPlayerInput() {
   }
 }
 
+function setupDecodingBoard() {
+  for (let i = 1; i <= gameSettings.totalTries; i++) {
+    const decodeAttemptEl = document.createElement("div");
+    decodeAttemptEl.classList.add("decode-attempt");
+    decodeAttemptEl.classList.add(`turn-${i}`);
+
+    const turnNumberEl = document.createElement("div");
+    turnNumberEl.innerText = i;
+    turnNumberEl.classList.add("turn-number");
+
+    const codePegListEl = document.createElement("div");
+    codePegListEl.classList.add("code-peg-list");
+
+    const keyPegListEl = document.createElement("div");
+    keyPegListEl.classList.add("key-peg-list");
+
+    for (let j = 0; j < gameSettings.keyLength; j++) {
+      const codePegEl = document.createElement("div");
+      codePegEl.classList.add("code-peg");
+      codePegEl.classList.add(`pos-${j}`);
+      codePegListEl.append(codePegEl);
+
+      const keyPegEl = document.createElement("div");
+      keyPegEl.classList.add("key-peg");
+      keyPegEl.classList.add(`pos-${j}`);
+      keyPegListEl.append(keyPegEl);
+    }
+
+    decodeAttemptEl.append(turnNumberEl);
+    decodeAttemptEl.append(codePegListEl);
+    decodeAttemptEl.append(keyPegListEl);
+
+    decodingBoardEl.append(decodeAttemptEl);
+  }
+}
+
+initialiseGame()
 // game.answer = setAnswer();
 
 // event listeners

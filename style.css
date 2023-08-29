@@ -72,7 +72,7 @@ header {
   border-radius: 1.5rem;
 
   height: 5rem;
-  margin: auto;
+  margin-bottom: 1rem;
   background-color: var(--game-container-bg-col);
 }
 
@@ -96,20 +96,21 @@ header {
 
 .code-peg {
   border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
+  height: 2.5rem;
+  width: 2.5rem;
   margin: 0.5rem;
   background-color: var(--code-empty);
 }
 
 .key-peg-list {
   display: grid;
-  width: 15%;
+  width: auto;
   grid-template-rows: 1rem 1rem;
   grid-template-columns: 1rem 1rem;
   justify-content: center;
   gap: 0.25rem;
-  margin-right: 0.5rem;
+  margin: 1rem;
+  margin-right: 1.5rem;
 }
 
 .key-peg {
@@ -120,12 +121,15 @@ header {
 }
 
 .player-input {
+  position: sticky;
+  top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
   width: 15%;
+  height: fit-content;
   border-top-right-radius: 1.5rem;
   border-bottom-left-radius: 1.5rem;
   background-color: var(--game-container-bg-col);
