@@ -1,0 +1,17 @@
+:root {
+  --main-bg-col: #faf8ef;
+  --title-text-col: #776e65;
+  --label-bg-col: #bbada0;
+
+  /* peg colours */
+  --code-red: #ffadad;
+  --code-orange: #ffd6a5;
+  --code-yellow: #fdffb6;
+  --code-green: #e4f1ee;
+  --code-blue: #d9edf8;
+  --code-purple: #dedaf4;
+  --code-empty: black;
+
+  --key-red: red;
+  --key-white: white;
+}
