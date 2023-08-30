@@ -27,7 +27,7 @@ const extraInputButtons = ["delete", "submit"];
 const gameButtons = ["settings"];
 
 //    game state
-const code = [];
+var code = [];
 const gameState = {
   isWin: false,
   isPlaying: true,
@@ -50,11 +50,17 @@ const decodingBoardEl = document.querySelector(".decoding-board");
 //    game setup
 function initialiseGame() {
   currentMove.attemptNo = 1;
+  currentMove.guess = [];
+  currentMove.keyList = []
+  code = []
+  decodingBoardEl.innerHTML = ""
   setColours();
   setCode();
   setupPlayerInput();
   setupDecodingBoard();
   changeSelectionOutline();
+  gameState.isWin = false;
+  gameState.isPlaying = true;
 }
 
 function setColours() {
@@ -311,6 +317,10 @@ function renderPlayAgain() {
   messageEl.append(replayButton);
   decodingBoardEl.append(messageEl);
   messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  replayButton.addEventListener("click", function(e) {
+    initialiseGame();
+  })
 }
 
 //    event listeners
