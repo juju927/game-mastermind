@@ -115,11 +115,22 @@ function submitGuess() {
   }
 
   // run check guess, if win -> returns true, else -> returns false
+  // if win
   if (checkGuess()) {
-    setWin();
+    setEnd(true);
     renderWin();
+    renderPlayAgain();
     return;
   }
+
+  // if lose
+  if (currentMove.attemptNo == gameSettings.totalTries) {
+    setEnd(false);
+    renderLose();
+    renderPlayAgain();
+    return;
+  }
+
   // if not win - go to next guess
   goNextGuess();
   return;
@@ -147,9 +158,9 @@ function goNextGuess() {
   changeSelectionOutline();
 }
 
-function setWin() {
-  isWin = true;
-  isPlaying = false;
+function setEnd(win) {
+  gameState.isWin = win;
+  gameState.isPlaying = false;
 }
 
 function showAnswer() {
@@ -229,6 +240,8 @@ function changeSelectionOutline() {
   }
   const toSelect = document.querySelector(`.turn-${currentMove.attemptNo}`);
   toSelect.classList.add("selected");
+
+  toSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function renderGuess() {
@@ -264,6 +277,40 @@ function renderWin() {
     const a = document.querySelector(`.decode-attempt.turn-${i}`);
     a.remove();
   }
+}
+
+function renderLose() {
+  // show the actual answer
+  const answerEl = document.createElement("div");
+  answerEl.classList.add("answer");
+  const codePegListEl = document.createElement("div");
+  codePegListEl.classList.add("code-peg-list");
+
+  const tiffyFace = document.createElement("div");
+  tiffyFace.classList.add("tiffyface");
+  codePegListEl.append(tiffyFace);
+
+  for (let j = 0; j < gameSettings.keyLength; j++) {
+    const codePegEl = document.createElement("div");
+    codePegEl.classList.add("code-peg");
+    codePegEl.classList.add(`${code[j]}-peg`);
+    codePegListEl.append(codePegEl);
+  }
+
+  answerEl.append(codePegListEl);
+  decodingBoardEl.append(answerEl);
+  answerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderPlayAgain() {
+  const messageEl = document.createElement("div");
+  messageEl.classList.add("message");
+  const replayButton = document.createElement("div");
+  replayButton.classList.add("button");
+  replayButton.classList.add("replay-button");
+  messageEl.append(replayButton);
+  decodingBoardEl.append(messageEl);
+  messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 //    event listeners
@@ -328,9 +375,7 @@ document.addEventListener("keydown", function (e) {
   return;
 });
 
-initialiseGame();
+window.onload = initialiseGame();
 
-// immediate to-do:
-// - start screen/ start game button
-// - game over/ game win
-// - game reset
+// scroll into view: https://stackoverflow.com/questions/68165/javascript-to-scroll-long-page-to-div
+

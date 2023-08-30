@@ -64,7 +64,7 @@ header {
 }
 
 /* contains turn no, guess, & result/ submit button */
-.decode-attempt {
+.decode-attempt, .answer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -73,6 +73,15 @@ header {
   height: 5rem;
   margin-bottom: 1rem;
   background-color: var(--game-container-bg-col);
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5rem;
+
+  height: 5rem;
 }
 
 .turn-number {
@@ -181,6 +190,17 @@ header {
   background-color: var(--code-purple);
 }
 
+.tiffyface {
+  border-radius: 50%;
+  height: 3.5rem;
+  width: 3.5rem;
+  margin: 0.5rem;
+  margin-right: 2rem;
+  border-right: 1px solid var(--main-bg-col);
+  background-image: url(./assets/tiffyface.png);
+  background-size: contain;
+}
+
 .submit-button {
   background-image: url(./assets/submitButton.png);
   background-size: contain;
@@ -193,6 +213,11 @@ header {
 
 .settings-button {
   background-image: url(./assets/settingsButton.png);
+  background-size: contain;
+}
+
+.replay-button {
+  background-image: url(./assets/replayButton.png);
   background-size: contain;
 }
 
