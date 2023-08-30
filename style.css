@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Handjet:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Handjet:wght@600&display=swap");
 
 :root {
   --main-bg-col: #d8b7fa;
@@ -43,7 +43,7 @@ body {
 header {
   text-align: center;
   font-size: 3rem;
-  font-family: 'Handjet', cursive;
+  font-family: "Handjet", cursive;
   letter-spacing: 0.2rem;
   word-spacing: 120%;
   color: var(--title-text-col);
@@ -79,7 +79,7 @@ header {
   display: block;
   width: 15%;
   text-align: center;
-  font-family: 'Handjet', cursive;
+  font-family: "Handjet", cursive;
   font-size: 2rem;
   margin-left: 0.5rem;
 }
@@ -143,10 +143,14 @@ header {
   cursor: pointer;
 
   /* add in future for colour blindness */
-  font-family: 'Handjet', cursive;
+  font-family: "Handjet", cursive;
   font-size: 1rem;
   text-align: center;
   line-height: 3.5rem;
+}
+
+.button:hover {
+  border: 2px solid black;
 }
 
 .selected {
@@ -178,8 +182,18 @@ header {
 }
 
 .submit-button {
-  background-image: url(https://emojimix.app/emojimixfusion/34_65.png);
-  background-size: cover;
+  background-image: url(./assets/submitButton.png);
+  background-size: contain;
+}
+
+.delete-button {
+  background-image: url(./assets/deleteButton.png);
+  background-size: contain;
+}
+
+.settings-button {
+  background-image: url(./assets/settingsButton.png);
+  background-size: contain;
 }
 
 .R-peg {

@@ -6,8 +6,8 @@ const codePegs = {
 };
 
 const gameSettings = {
-  totalTries: 10, // amount of tries before game lose
-  keyLength: 4, // how long the code is
+  totalTries: 10, // amount of tries before game lose - max 2.5*keyLength
+  keyLength: 6, // how long the code is - max 6
   colours: 6, // number of colour type inputs (max 6)
   duplicates: true, // can decide later if duplicates not allowed
 };
@@ -22,6 +22,9 @@ const keyBinds = {
   Enter: submitGuess,
   Backspace: removeLastColourFromGuess,
 };
+
+const extraInputButtons = ["delete", "submit"];
+const gameButtons = ["settings"];
 
 //    game state
 const code = [];
@@ -46,6 +49,7 @@ const decodingBoardEl = document.querySelector(".decoding-board");
 // functions
 //    game setup
 function initialiseGame() {
+  currentMove.attemptNo = 1;
   setColours();
   setCode();
   setupPlayerInput();
@@ -71,15 +75,22 @@ function setCode() {
 
 function checkGuess() {
   let tempAns = [...code]; // make a copy of the answer into current move's temp
+  let Rcount = 0;
 
   // check for correct colour, correct spot (R)
   // replace checked values with 'x'
   for (let i = 0; i < tempAns.length; i++) {
     if (tempAns[i] == currentMove.guess[i]) {
       currentMove.keyList.push("R");
+      Rcount++;
       tempAns[i] = "x";
       currentMove.guess[i] = "x";
     }
+  }
+
+  if (Rcount == code.length) {
+    renderKeys();
+    return true;
   }
 
   // check for correct colour, wrong spot (W)
@@ -94,6 +105,24 @@ function checkGuess() {
       currentMove.keyList.push("W");
     }
   }
+  renderKeys();
+  return false;
+}
+
+function submitGuess() {
+  if (currentMove.guess.length != gameSettings.keyLength) {
+    return;
+  }
+
+  // run check guess, if win -> returns true, else -> returns false
+  if (checkGuess()) {
+    setWin();
+    renderWin();
+    return;
+  }
+  // if not win - go to next guess
+  goNextGuess();
+  return;
 }
 
 //    game control
@@ -111,18 +140,16 @@ function addtoGuess(colour) {
   renderGuess();
 }
 
-function submitGuess() {
-  // if guess is not complete, ignore the click
-  //! in future add an animation to this
-  if (currentMove.guess.length != gameSettings.keyLength) {
-    return;
-  }
-  checkGuess();
-  renderKeys();
+function goNextGuess() {
   currentMove.attemptNo += 1;
   currentMove.guess = [];
   currentMove.keyList = [];
   changeSelectionOutline();
+}
+
+function setWin() {
+  isWin = true;
+  isPlaying = false;
 }
 
 function showAnswer() {
@@ -133,18 +160,28 @@ function showAnswer() {
 function setupPlayerInput() {
   for (let colour of codePegs.current) {
     const a = document.createElement("div");
-    a.innerText = colour;
+    a.setAttribute("title", colour);
     a.classList.add("button");
     a.classList.add("colour-peg");
     a.classList.add(`${colour}-peg`);
     colourInputEl.append(a);
   }
 
-  const submitButton = document.createElement("div");
-  submitButton.innerText = "submit";
-  submitButton.classList.add("button");
-  submitButton.classList.add("submit-button");
-  colourInputEl.append(submitButton);
+  for (let button of extraInputButtons) {
+    const newButton = document.createElement("div");
+    newButton.setAttribute("title", button);
+    newButton.classList.add("button");
+    newButton.classList.add(`${button}-button`);
+    colourInputEl.append(newButton);
+  }
+
+  // for (let button of gameButtons) {
+  //   const newButton = document.createElement("div");
+  //   newButton.setAttribute("title", button);
+  //   newButton.classList.add("button");
+  //   newButton.classList.add(`${button}-button`);
+  //   playerInputEl.append(newButton);
+  // }
 }
 
 function setupDecodingBoard() {
@@ -213,12 +250,19 @@ function renderGuess() {
 }
 
 function renderKeys() {
-  console.log(currentMove.keyList);
   for (let i = 0; i < currentMove.keyList.length; i++) {
     const a = document.querySelector(
       `.key-peg.turn-${currentMove.attemptNo}.pos-${i}`
     );
     a.classList.add(`${currentMove.keyList[i]}-peg`);
+  }
+}
+
+function renderWin() {
+  // remove all remaining moves
+  for (let i = currentMove.attemptNo + 1; i <= gameSettings.totalTries; i++) {
+    const a = document.querySelector(`.decode-attempt.turn-${i}`);
+    a.remove();
   }
 }
 
@@ -234,7 +278,7 @@ playerInputEl.addEventListener("click", function (e) {
     }
 
     // if not, add to currentMove's guess
-    addtoGuess(e.target.innerText);
+    addtoGuess(e.target.title);
     return;
   }
   // clicked the submit button
@@ -246,6 +290,16 @@ playerInputEl.addEventListener("click", function (e) {
 
     // if not, submit the guess
     submitGuess();
+  }
+
+  if (e.target.classList.contains("delete-button")) {
+    // if game is not ongoing, ignore the click
+    if (!gameState.isPlaying) {
+      return;
+    }
+
+    //if not, remove the last
+    removeLastColourFromGuess();
     return;
   }
 });
