@@ -39,21 +39,22 @@ const currentMove = {
   keyList: [],
 };
 
-//    cached elements/ query selectors
+//    dynamic elements/ query selectors
 const playerInputEl = document.querySelector(".player-input");
 const colourInputEl = document.querySelector(".colour-input");
 const decodingBoardEl = document.querySelector(".decoding-board");
 
-//    dynamic elements/ query selectors
+//    cached elements/ query selectors
 
 // functions
 //    game setup
 function initialiseGame() {
   currentMove.attemptNo = 1;
   currentMove.guess = [];
-  currentMove.keyList = []
-  code = []
-  decodingBoardEl.innerHTML = ""
+  currentMove.keyList = [];
+  code = [];
+  colourInputEl.innerHTML = "";
+  decodingBoardEl.innerHTML = "";
   setColours();
   setCode();
   setupPlayerInput();
@@ -247,7 +248,7 @@ function changeSelectionOutline() {
   const toSelect = document.querySelector(`.turn-${currentMove.attemptNo}`);
   toSelect.classList.add("selected");
 
-  toSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  toSelect.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function renderGuess() {
@@ -305,7 +306,7 @@ function renderLose() {
 
   answerEl.append(codePegListEl);
   decodingBoardEl.append(answerEl);
-  answerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  answerEl.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function renderPlayAgain() {
@@ -316,11 +317,11 @@ function renderPlayAgain() {
   replayButton.classList.add("replay-button");
   messageEl.append(replayButton);
   decodingBoardEl.append(messageEl);
-  messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  messageEl.scrollIntoView({ behavior: "smooth", block: "center" });
 
-  replayButton.addEventListener("click", function(e) {
+  replayButton.addEventListener("click", function (e) {
     initialiseGame();
-  })
+  });
 }
 
 //    event listeners
@@ -388,4 +389,3 @@ document.addEventListener("keydown", function (e) {
 window.onload = initialiseGame();
 
 // scroll into view: https://stackoverflow.com/questions/68165/javascript-to-scroll-long-page-to-div
-
