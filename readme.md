@@ -23,7 +23,7 @@ If you guess the code - you win!
 
 ![](./readme/controls.png "controls")
 
-## 📝 moving forward
+## 📝 future developments
 
 - [x] win/ lose message
 - [ ] game instructions/ start game button
