@@ -1,4 +1,17 @@
 // variables
+//    game state
+var code = [];
+const gameState = {
+  isWin: false,
+  isPlaying: true,
+};
+
+const currentMove = {
+  attemptNo: 1,
+  guess: [],
+  keyList: [],
+};
+
 //    constants
 const codePegs = {
   all: "red orange yellow green blue purple".split(" "),
@@ -23,21 +36,13 @@ const keyBinds = {
   Backspace: removeLastColourFromGuess,
 };
 
+const messages = {
+  win: `🎉 you solved the code in ${currentMove.attemptNo} guess(es)! 🎉`,
+  lose: `you didn't solve the code...`,
+};
+
 const extraInputButtons = ["delete", "submit"];
 const gameButtons = ["settings"];
-
-//    game state
-var code = [];
-const gameState = {
-  isWin: false,
-  isPlaying: true,
-};
-
-const currentMove = {
-  attemptNo: 1,
-  guess: [],
-  keyList: [],
-};
 
 //    dynamic elements/ query selectors
 const playerInputEl = document.querySelector(".player-input");
@@ -125,6 +130,7 @@ function submitGuess() {
   // if win
   if (checkGuess()) {
     setEnd(true);
+    renderMessage(messages.win);
     renderWin();
     renderPlayAgain();
     return;
@@ -133,6 +139,7 @@ function submitGuess() {
   // if lose
   if (currentMove.attemptNo == gameSettings.totalTries) {
     setEnd(false);
+    renderMessage(messages.lose);
     renderLose();
     renderPlayAgain();
     return;
@@ -306,7 +313,15 @@ function renderLose() {
 
   answerEl.append(codePegListEl);
   decodingBoardEl.append(answerEl);
-  answerEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  scroll2(answerEl);
+}
+
+function renderMessage(message) {
+  const a = document.createElement("div");
+  a.classList.add("message");
+  a.innerText = message;
+  decodingBoardEl.append(a);
+  scroll2(a);
 }
 
 function renderPlayAgain() {
@@ -322,6 +337,10 @@ function renderPlayAgain() {
   replayButton.addEventListener("click", function (e) {
     initialiseGame();
   });
+}
+
+function scroll2(element) {
+  element.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 //    event listeners

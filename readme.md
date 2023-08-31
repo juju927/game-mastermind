@@ -25,7 +25,7 @@ If you guess the code - you win!
 
 ## 📝 moving forward
 
-- [ ] win/ lose message
+- [x] win/ lose message
 - [ ] game instructions/ start game button
 - [ ] settings button
   - [ ] game settings:

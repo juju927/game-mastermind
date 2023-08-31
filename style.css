@@ -64,7 +64,8 @@ header {
 }
 
 /* contains turn no, guess, & result/ submit button */
-.decode-attempt, .answer {
+.decode-attempt,
+.answer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,6 +83,8 @@ header {
   border-radius: 1.5rem;
 
   height: 5rem;
+  font-family: "Handjet", cursive;
+  font-size: 1rem;
 }
 
 .turn-number {
