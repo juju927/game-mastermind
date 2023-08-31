@@ -2,7 +2,7 @@
 
 mastermind written in base html, css, js
 
-[[play now]](game-mastermind.vercel.app)
+[[play now]](https://game-mastermind.vercel.app)
 
 ## ❓ how to play
 
