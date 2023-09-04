@@ -20,7 +20,7 @@ const codePegs = {
 
 const gameSettings = {
   totalTries: 10, // amount of tries before game lose - max 2.5*keyLength
-  keyLength: 6, // how long the code is - max 6
+  keyLength: 4, // how long the code is - max 6
   colours: 6, // number of colour type inputs (max 6)
   duplicates: true, // can decide later if duplicates not allowed
 };

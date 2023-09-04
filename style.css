@@ -231,3 +231,40 @@ header {
 .W-peg {
   background-color: white;
 }
+
+@media only screen and (max-width: 600px) {
+  .main-container {
+    width: 100vw;
+  }
+
+  .game-container {
+    flex-direction: column;
+  }
+
+  .decoding-board {
+    width: 100%;
+  }
+
+  .code-peg {
+    margin: 0;
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .player-input {
+    bottom: 0px;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+
+    width: 100vw;
+    border-radius: 0%;
+    border-top: 2px solid black;
+    overflow-x: scroll;
+  }
+
+  .colour-input {
+    display: flex;
+    flex-direction: row;
+  }
+}

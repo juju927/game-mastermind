@@ -37,4 +37,4 @@ If you guess the code - you win!
     - [ ] light/ dark mode
     - [ ] left/ right input
     - [ ] allow changing of keybinds
-- [ ] responsive ui
+- [x] responsive ui
