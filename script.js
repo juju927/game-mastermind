@@ -36,11 +36,6 @@ const keyBinds = {
   Backspace: removeLastColourFromGuess,
 };
 
-const messages = {
-  win: `🎉 you solved the code in ${currentMove.attemptNo} guess(es)! 🎉`,
-  lose: `you didn't solve the code...`,
-};
-
 const extraInputButtons = ["delete", "submit"];
 const gameButtons = ["settings"];
 
@@ -130,7 +125,9 @@ function submitGuess() {
   // if win
   if (checkGuess()) {
     setEnd(true);
-    renderMessage(messages.win);
+    renderMessage(
+      `🎉 you solved the code in ${currentMove.attemptNo} guess(es)! 🎉`
+    );
     renderWin();
     renderPlayAgain();
     return;
@@ -139,7 +136,7 @@ function submitGuess() {
   // if lose
   if (currentMove.attemptNo == gameSettings.totalTries) {
     setEnd(false);
-    renderMessage(messages.lose);
+    renderMessage(`you didn't solve the code...`);
     renderLose();
     renderPlayAgain();
     return;
